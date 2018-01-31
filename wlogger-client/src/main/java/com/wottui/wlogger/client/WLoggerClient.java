@@ -5,11 +5,14 @@ import com.wottui.wlogger.core.Level;
 import com.wottui.wlogger.core.LoggerDataDealTools;
 import com.wottui.wlogger.core.WLoggerData;
 import com.wottui.wlogger.core.utils.JerseyClient;
+import org.ho.yaml.Yaml;
 
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,12 +30,44 @@ public class WLoggerClient implements IWLoggerClient {
             new ArrayBlockingQueue(100), new ThreadPoolExecutor.DiscardOldestPolicy());
     private static ILoggerDataDealTools tools = new LoggerDataDealTools();
     private String namespace;
-    private String URL;
+    private static final String URL = "http://wlogger.mob.com/wlogger/api/gateway";
+    private static WLoggerClient client = new WLoggerClient();
 
-    public WLoggerClient(String namespace, String URL) {
-        this.namespace = namespace;
-        this.URL = URL;
+    private WLoggerClient() {
+        this.namespace = this.getNamespace();
     }
+
+    public static WLoggerClient newInstance() {
+        return client;
+    }
+
+    private String getNamespace() {
+        String namespace;
+        try {
+            Properties properties = new Properties();
+            InputStream inputStream = WLoggerClient.class.getClassLoader()
+                    .getResourceAsStream("application.properties");
+            properties.load(inputStream);
+            namespace = properties.getProperty("app.name");
+            if (namespace == null)
+                namespace = this.getNamespaceAtYAML();
+        } catch (Throwable e) {
+            namespace = this.getNamespaceAtYAML();
+        }
+        return namespace;
+    }
+
+    private String getNamespaceAtYAML() {
+        try {
+            InputStream inputStream = WLoggerClient.class.getClassLoader().getResourceAsStream("application.yml");
+            Map map = Yaml.loadType(inputStream, HashMap.class);
+            namespace = (String) map.get("app.name");
+            return namespace;
+        } catch (Throwable e) {
+            return "default";
+        }
+    }
+
 
     @Override
     public void infoLog(String log) {
@@ -87,11 +122,11 @@ public class WLoggerClient implements IWLoggerClient {
             } catch (Throwable e) {
             }
         }
+
     }
 
     public static void main(String[] args) throws Exception {
-        String url = "http://127.0.0.1:8080/wlogger/api/gateway";
-        WLoggerClient client = new WLoggerClient("pay-sdk-server", url);
+        WLoggerClient client = new WLoggerClient();
         while (true) {
             client.debugLog("fhsifhsifhsifs");
             System.out.println(Thread.currentThread().getName());

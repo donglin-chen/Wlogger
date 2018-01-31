@@ -6,6 +6,8 @@ import com.wottui.wlogger.core.LoggerDataDealTools;
 import com.wottui.wlogger.core.WLoggerData;
 import com.wottui.wlogger.core.utils.JerseyClient;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -45,6 +47,14 @@ public class WLoggerClient implements IWLoggerClient {
     @Override
     public void warnLog(String log) {
         EXECUTOR_SERVICE.execute(new WLoggerWorker(log, Level.WARN));
+    }
+
+    @Override
+    public void errorLog(Throwable throwable) {
+        StringWriter errorsWriter = new StringWriter();
+        throwable.printStackTrace(new PrintWriter(errorsWriter, true));
+        String log = errorsWriter.toString();
+        EXECUTOR_SERVICE.execute(new WLoggerWorker(log, Level.ERROR));
     }
 
     @Override

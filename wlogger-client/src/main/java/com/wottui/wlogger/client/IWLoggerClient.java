@@ -14,4 +14,6 @@ public interface IWLoggerClient {
     void warnLog(String log);
 
     void errorLog(String log);
+
+    void errorLog(Throwable throwable);
 }

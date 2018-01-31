@@ -24,7 +24,7 @@ import static com.wottui.wlogger.core.API.LOG_UPLOAD;
  */
 public class WLoggerClient implements IWLoggerClient {
     private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(2, 8, 0, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(100), new ThreadPoolExecutor.DiscardOldestPolicy());
+            new ArrayBlockingQueue(100), new ThreadPoolExecutor.DiscardOldestPolicy());
     private static ILoggerDataDealTools tools = new LoggerDataDealTools();
     private String namespace;
     private String URL;

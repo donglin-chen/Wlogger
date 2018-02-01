@@ -12,14 +12,13 @@ import java.io.Serializable;
 public class WLoggerData implements Serializable {
 
     private String namespace;
-    private String ip;
     private String level;
     private String content;
     private long timestamp;
+    private static String ip = MachineUtils.getLocalIP();
 
     public WLoggerData() {
         this.timestamp = System.currentTimeMillis();
-        this.ip = MachineUtils.getLocalIP();
     }
 
     public String getNamespace() {

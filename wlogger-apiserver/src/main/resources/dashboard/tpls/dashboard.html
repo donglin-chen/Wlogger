@@ -1,5 +1,5 @@
-<div ng-controller="dashboardController" >
-    <div class="box" style="position: fixed;" >
+<div ng-controller="dashboardController">
+    <div class="box" style="position: fixed;background: #F5F5F5;width: 80%">
         <div class="box-body">
             <form class="form-inline">
                 <div class="form-group">
@@ -21,14 +21,17 @@
                             ng-options="display.name for display in levelList">
                     </select>
                 </div>
+                <div class="form-group">
+                        <input type="checkbox" ng-model="freshOpen"> 自动刷新
+                </div>
             </form>
         </div>
     </div>
     </br>
-    <div id="chat_history" style="margin-top: 3%;overflow-y: scroll;position:fixed;height: 75%;width: 85%;"
-         id="chat_history">
+    <div id="chat_history" style="margin-top: 3%;overflow-y: scroll;position:fixed;height: 75%;width: 80%"
+         id="chat_history" ng-mousedown="mousedown()" ng-mouseleave="mouseleave()">
         <div ng-repeat="log in dataList track by $index">
-            <div class="col-md-2">
+            <div style="width: 20% ; float: left">
                 [ <span ng-bind="log.timestamp | date:'yyyy-MM-dd HH:mm:ss'"></span>--]
                 <span ng-if="log.level=='DEBUG'" ng-bind="log.level" style="font-weight: bold"></span>
                 <span ng-if="log.level=='INFO'" ng-bind="log.level" style="font-weight: bold"></span>
@@ -36,7 +39,8 @@
                 <span ng-if="log.level=='ERROR'" ng-bind="log.level" style="font-weight: bold ;color: red"></span>
                 :
             </div>
-            <div class="col-md-9" ng-bind="log.content" style="word-wrap:break-word;"></div>
+            <pre ng-bind="log.content"
+                 style="padding: 1px;border: none;width: 80%;float: left;margin: 0 0 0px;"></pre>
         </div>
     </div>
 

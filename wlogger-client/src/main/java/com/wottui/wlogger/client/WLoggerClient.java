@@ -120,6 +120,7 @@ public class WLoggerClient implements IWLoggerClient {
                 params.put("apitype", LOG_UPLOAD.name());
                 JerseyClient.post(URL, params);
             } catch (Throwable e) {
+                e.printStackTrace();
             }
         }
 
@@ -127,9 +128,7 @@ public class WLoggerClient implements IWLoggerClient {
 
     public static void main(String[] args) throws Exception {
         WLoggerClient client = new WLoggerClient();
-        while (true) {
-            client.debugLog("fhsifhsifhsifs");
-            System.out.println(Thread.currentThread().getName());
-        }
+        client.errorLog(new NullPointerException("fsfs"));
+        System.out.println(Thread.currentThread().getName());
     }
 }

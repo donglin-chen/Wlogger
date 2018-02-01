@@ -31,10 +31,17 @@ webApp.controller('dashboardController', function (cfpLoadingBar, $scope, $http,
     
     $scope.dataList = [];
     
+    $scope.freshOpen = true;
+    var timer;
     $scope.loadData = function () {
         $scope.params.level = $scope.paramsLevel.value;
         Api.http($http, "DASHBOARD", JSON.stringify($scope.params), function (data) {
             $scope.dataList = data;
+            if ($scope.freshOpen == true) {
+                $scope.scrollWindow();
+            } else {
+                $interval.cancel(timer);
+            }
         });
     };
     
@@ -43,18 +50,13 @@ webApp.controller('dashboardController', function (cfpLoadingBar, $scope, $http,
     
     $interval(function () {
         $scope.loadData();
-    }, 10);
+        
+    }, 100);
     
     $scope.scrollWindow = function () {
         var _el = document.getElementById('chat_history');
-        _el.scrollTop = 10000;
+        _el.scrollTop = _el.innerHTML.length;
+        
     };
     
-    var timer = $interval(function () {
-        $scope.scrollWindow();
-    }, 100);
-    
-    $interval(function () {
-        $interval.cancel(timer);
-    }, 200);
 });

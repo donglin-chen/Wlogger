@@ -1,28 +1,19 @@
-package com.wottui.wlogger.common;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.wottui.wlogger.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author: 1556964226@qq.com
- * @Date: 2018/1/29
- * @Time: 20:32
+ * @Date: 2018/2/1
+ * @Time: 14:43
  */
-@Document(collection = "tb_wlogger_info")
-public class WLoggerInfo implements Serializable {
-    @Id
+public class LogVO implements Serializable {
     private String id;
-    @Indexed
     private String namespace;
-    @Indexed
     private String ip;
-    @Indexed
     private String level;
-    private String content;
-    @Indexed
+    private List<String> content;
     private long timestamp;
 
     public String getId() {
@@ -57,11 +48,11 @@ public class WLoggerInfo implements Serializable {
         this.level = level;
     }
 
-    public String getContent() {
+    public List<String> getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(List<String> content) {
         this.content = content;
     }
 

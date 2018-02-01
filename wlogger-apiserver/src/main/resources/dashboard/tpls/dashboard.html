@@ -1,0 +1,48 @@
+<div ng-controller="dashboardController" class="box">
+    <div class="box-header"></div>
+
+    <div style="position: fixed;z-index: 1;background: white;" class="box-body">
+        <form class="form-inline">
+            <div class="form-group">
+                <label>应用名</label>
+                <input type="text" class="form-control" placeholder="pay-sdk-server" ng-model="params.namespace">
+            </div>
+            <div class="form-group">
+                <label>应用IP</label>
+                <input type="text" class="form-control" placeholder="10.18.97.148" ng-model="params.ip">
+            </div>
+
+            <div class="form-group">
+                <label>日志内容</label>
+                <input type="text" class="form-control" placeholder="log content regex" ng-model="params.like">
+            </div>
+            <div class="form-group">
+                <label>日志级别</label>
+                <select class="form-control" ng-model="paramsLevel"
+                        ng-options="display.name for display in levelList">
+                </select>
+            </div>
+        </form>
+    </div>
+    </br>
+    <div class="box-header"></div>
+    <div id="chat_history" style="margin-top: 2%; height: 700px;overflow-y: scroll;" id="chat_history" class="row">
+        <div ng-repeat="log in dataList track by $index">
+            <div class="col-md-2">
+                [ <span ng-bind="log.timestamp | date:'yyyy-MM-dd HH:mm:ss'"></span>--]
+                <span ng-if="log.level=='DEBUG'" ng-bind="log.level" style="font-weight: bold"></span>
+                <span ng-if="log.level=='INFO'" ng-bind="log.level" style="font-weight: bold"></span>
+                <span ng-if="log.level=='WARN'" ng-bind="log.level" style="font-weight: bold ;color: #FF8911"></span>
+                <span ng-if="log.level=='ERROR'" ng-bind="log.level" style="font-weight: bold ;color: red"></span>
+                :
+            </div>
+            <div class="col-md-9" ng-bind="log.content" style="word-wrap:break-word;"></div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+
+</script>

@@ -15,12 +15,9 @@
     <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-
 </head>
-
-
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+<body class="hold-transition skin-blue sidebar-mini" >
+<div class="wrapper" >
 
     <header class="main-header" style="position: fixed;width: 100%">
         <a href="index2.html" class="logo">
@@ -76,7 +73,7 @@
                         <i class="fa fa-envelope"></i>
                         <span>邮件中心</span>
                         <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
@@ -88,9 +85,10 @@
         </section>
     </aside>
 
-    <div class="content-wrapper" style="min-height: 916px;">
-        <section class="content-header" ></section>
-        <section class="content" ng-view style="margin-top: 3%;margin-left:1%;background: white;height: 80%;"></section>
+    <div class="content-wrapper" style="background: white">
+        <section class="content-header"></section>
+        <section class="content" ng-view
+                 style="margin-top: 3%;margin-left:1%;"></section>
     </div>
 
 </div>

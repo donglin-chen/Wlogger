@@ -1,32 +1,32 @@
-<div ng-controller="dashboardController" class="box">
-    <div class="box-header"></div>
+<div ng-controller="dashboardController" >
+    <div class="box" style="position: fixed;" >
+        <div class="box-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label>应用名</label>
+                    <input type="text" class="form-control" placeholder="pay-sdk-server" ng-model="params.namespace">
+                </div>
+                <div class="form-group">
+                    <label>应用IP</label>
+                    <input type="text" class="form-control" placeholder="10.18.97.148" ng-model="params.ip">
+                </div>
 
-    <div style="position: fixed;z-index: 1;background: white;" class="box-body">
-        <form class="form-inline">
-            <div class="form-group">
-                <label>应用名</label>
-                <input type="text" class="form-control" placeholder="pay-sdk-server" ng-model="params.namespace">
-            </div>
-            <div class="form-group">
-                <label>应用IP</label>
-                <input type="text" class="form-control" placeholder="10.18.97.148" ng-model="params.ip">
-            </div>
-
-            <div class="form-group">
-                <label>日志内容</label>
-                <input type="text" class="form-control" placeholder="log content regex" ng-model="params.like">
-            </div>
-            <div class="form-group">
-                <label>日志级别</label>
-                <select class="form-control" ng-model="paramsLevel"
-                        ng-options="display.name for display in levelList">
-                </select>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label>日志内容</label>
+                    <input type="text" class="form-control" placeholder="log content regex" ng-model="params.like">
+                </div>
+                <div class="form-group">
+                    <label>日志级别</label>
+                    <select class="form-control" ng-model="paramsLevel"
+                            ng-options="display.name for display in levelList">
+                    </select>
+                </div>
+            </form>
+        </div>
     </div>
     </br>
-    <div class="box-header"></div>
-    <div id="chat_history" style="margin-top: 2%; height: 700px;overflow-y: scroll;" id="chat_history" class="row">
+    <div id="chat_history" style="margin-top: 3%;overflow-y: scroll;position:fixed;height: 75%;width: 85%;"
+         id="chat_history">
         <div ng-repeat="log in dataList track by $index">
             <div class="col-md-2">
                 [ <span ng-bind="log.timestamp | date:'yyyy-MM-dd HH:mm:ss'"></span>--]

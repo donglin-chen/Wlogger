@@ -9,14 +9,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script type="text/javascript">
 
-function doLoadScript( url )
+function doLoadScript( gateway )
 {
-	if ( !url )
+	if ( !gateway )
 		return false ;
 
 	var s = document.createElement( "script" ) ;
 	s.type = "text/javascript" ;
-	s.src = url ;
+	s.src = gateway ;
 	document.getElementsByTagName( "head" )[ 0 ].appendChild( s ) ;
 
 	return true ;
@@ -35,7 +35,7 @@ function tryLoad()
 	document.getElementById( 'itFrameset' ).rows = sFramesetRows ;
 
 	// dynamic including init frames and crossdomain transport code
-	// from config sproxy_js_frameset url
+	// from config sproxy_js_frameset gateway
 	var addScriptUrl = oParams.sproxy_js_frameset ;
 	doLoadScript( addScriptUrl ) ;
 }

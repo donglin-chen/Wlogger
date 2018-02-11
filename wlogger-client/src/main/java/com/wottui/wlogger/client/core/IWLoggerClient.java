@@ -1,4 +1,6 @@
-package com.wottui.wlogger.client;
+package com.wottui.wlogger.client.core;
+
+import com.wottui.wlogger.core.Level;
 
 /**
  * @Author: 1556964226@qq.com
@@ -16,4 +18,8 @@ public interface IWLoggerClient {
     void errorLog(String log);
 
     void errorLog(Throwable throwable);
+
+    void fatalLog(String message);
+
+    void dispatch(String message, String level);
 }

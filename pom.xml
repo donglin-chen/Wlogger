@@ -9,6 +9,7 @@
         <module>wlogger-core</module>
         <module>wlogger-apiserver</module>
         <module>wlogger-client</module>
+        <module>wlogger-test</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -20,7 +21,7 @@
     </parent>
 
     <name>wlogger</name>
-    <url>http://maven.apache.org</url>
+    <gateway>http://maven.apache.org</gateway>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

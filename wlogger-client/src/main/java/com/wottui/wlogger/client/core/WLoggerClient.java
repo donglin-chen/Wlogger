@@ -1,18 +1,15 @@
-package com.wottui.wlogger.client;
+package com.wottui.wlogger.client.core;
 
 import com.wottui.wlogger.core.ILoggerDataDealTools;
 import com.wottui.wlogger.core.Level;
 import com.wottui.wlogger.core.LoggerDataDealTools;
 import com.wottui.wlogger.core.WLoggerData;
 import com.wottui.wlogger.core.utils.JerseyClient;
-import org.ho.yaml.Yaml;
 
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,47 +24,15 @@ import static com.wottui.wlogger.core.API.LOG_UPLOAD;
  */
 public class WLoggerClient implements IWLoggerClient {
     private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(2, 8, 0, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<Runnable>(100), new ThreadPoolExecutor.DiscardOldestPolicy());
+                                                                                   new ArrayBlockingQueue<Runnable>(
+                                                                                           100),
+                                                                                   new ThreadPoolExecutor.DiscardOldestPolicy());
+    public static final WLoggerClient DEFAULT = new WLoggerClient();
     private static ILoggerDataDealTools tools = new LoggerDataDealTools();
-    private String namespace;
-    private static final String URL = "http://wlogger.mob.com/wlogger/api/gateway";
-    private static WLoggerClient client = new WLoggerClient();
 
-    private WLoggerClient() {
-        this.namespace = this.getNamespace();
+    public WLoggerClient() {
+
     }
-
-    public static WLoggerClient newInstance() {
-        return client;
-    }
-
-    private String getNamespace() {
-        String namespace;
-        try {
-            Properties properties = new Properties();
-            InputStream inputStream = WLoggerClient.class.getClassLoader()
-                    .getResourceAsStream("application.properties");
-            properties.load(inputStream);
-            namespace = properties.getProperty("app.name");
-            if (namespace == null)
-                namespace = this.getNamespaceAtYAML();
-        } catch (Throwable e) {
-            namespace = this.getNamespaceAtYAML();
-        }
-        return namespace;
-    }
-
-    private String getNamespaceAtYAML() {
-        try {
-            InputStream inputStream = WLoggerClient.class.getClassLoader().getResourceAsStream("application.yml");
-            Map map = Yaml.loadType(inputStream, HashMap.class);
-            namespace = (String) map.get("app.name");
-            return namespace;
-        } catch (Throwable e) {
-            return "default";
-        }
-    }
-
 
     @Override
     public void infoLog(String log) {
@@ -112,23 +77,63 @@ public class WLoggerClient implements IWLoggerClient {
                 WLoggerData wLoggerData = new WLoggerData();
                 wLoggerData.setContent(log);
                 wLoggerData.setLevel(level.name());
-                wLoggerData.setNamespace(namespace);
+                wLoggerData.setNamespace(Env.e.getNamespace());
                 wLoggerData.setTimestamp(System.currentTimeMillis());
                 String text = tools.deal(wLoggerData);
                 Map<String, String> params = new HashMap<>();
                 params.put("text", text);
                 params.put("apitype", LOG_UPLOAD.name());
-                JerseyClient.post(URL, params);
+                JerseyClient.post(Env.e.getUrl(), params);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void fatalLog(String message) {
 
     }
 
-    public static void main(String[] args) throws Exception {
-        WLoggerClient client = new WLoggerClient();
-        client.errorLog(new NullPointerException("fsfs"));
-        System.out.println(Thread.currentThread().getName());
+    /**
+     * 日志分发器
+     *
+     * @param message 日志体
+     * @param level   日志级别
+     */
+    @Override
+    public void dispatch(String message, String level) {
+        if (Level.DEBUG.name().equals(level))
+            this.debugLog(message);
+        if (Level.INFO.name().equals(level))
+            this.infoLog(message);
+        if (Level.WARN.name().equals(level))
+            this.warnLog(message);
+        if (Level.ERROR.name().equals(level))
+            this.errorLog(message);
+        if (Level.FATAL.name().equals(level))
+            this.fatalLog(message);
+    }
+
+    public static class Env {
+        public static final Env e = new Env();
+        private String namespace;
+        private String url;
+
+        String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
     }
 }

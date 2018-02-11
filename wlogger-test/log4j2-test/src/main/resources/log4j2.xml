@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Properties>
+        <Property name="logFilePath">D:\\wlogger\\log4j2</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <RollingFile name="fileAppender" fileName="${logFilePath}/log.txt"
+                     filePattern="${logFilePath}debug/log-%d{MM-dd-yyyy}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>[%d{MMdd HH:mm:ss SSS}] - %m%n</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
+        <WloggerHttpAppender name="wloggerHttpAppender" appName="test"
+                             gateway="http://wlogger.mob.com/wlogger/api/gateway">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5p] {%F:%L} - %m%n"/>
+
+        </WloggerHttpAppender>
+
+    </Appenders>
+
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="fileAppender"/>
+            <AppenderRef ref="wloggerHttpAppender"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

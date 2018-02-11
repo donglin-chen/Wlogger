@@ -12,12 +12,12 @@
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
-            <gateway>http://mvn.code.mob.com:8081/nexus/content/repositories/releases/</gateway>
+            <url>http://mvn.code.mob.com:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <gateway>http://mvn.code.mob.com:8081/nexus/content/repositories/snapshots/</gateway>
+            <url>http://mvn.code.mob.com:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 

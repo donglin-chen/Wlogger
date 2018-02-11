@@ -22,15 +22,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                        <input type="checkbox" ng-model="freshOpen"> 自动刷新
+                    <input type="checkbox" ng-model="freshOpen"> 自动刷新
                 </div>
             </form>
         </div>
     </div>
     </br>
-    <div id="chat_history" style="margin-top: 3%;overflow-y: scroll;position:fixed;height: 75%;width: 80%"
+    <div id="chat_history" style="margin-top: 3%;overflow: scroll;position:fixed;height: 75%;"
          id="chat_history" ng-mousedown="mousedown()" ng-mouseleave="mouseleave()">
-        <div ng-repeat="log in dataList track by $index">
+        <div ng-repeat="log in dataList track by $index" style="width: auto">
             <div style="width: 20% ; float: left">
                 [ <span ng-bind="log.timestamp | date:'yyyy-MM-dd HH:mm:ss'"></span>--]
                 <span ng-if="log.level=='DEBUG'" ng-bind="log.level" style="font-weight: bold"></span>
@@ -40,7 +40,8 @@
                 :
             </div>
             <pre ng-bind="log.content"
-                 style="padding: 1px;border: none;width: 80%;float: left;margin: 0 0 0px;"></pre>
+                 style="padding: 1px;border: none;margin: 0 0 0px;width: 80% ;white-space: pre-wrap;white-space:
+                 -moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;"></pre>
         </div>
     </div>
 

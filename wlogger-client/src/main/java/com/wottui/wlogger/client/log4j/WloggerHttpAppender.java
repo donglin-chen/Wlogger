@@ -62,7 +62,7 @@ public class WloggerHttpAppender extends AppenderSkeleton {
     public void setGateway(String gateway) {
         this.gateway = gateway;
         if (gateway == null)
-            throw new RuntimeException("Wlogger client gateway not null");
+            throw new RuntimeException("WloggerClient Gateway Value not null");
         WLoggerClient.Env.e.setUrl(gateway);
     }
 }

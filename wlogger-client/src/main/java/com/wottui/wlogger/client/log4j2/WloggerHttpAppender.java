@@ -30,16 +30,20 @@ public class WloggerHttpAppender extends AbstractAppender {
 
     @Override
     public void append(LogEvent logEvent) {
-        String level = logEvent.getLevel().name();
-        Message message = logEvent.getMessage();
-        if (message != null) {
-            //send log message
-            WLoggerClient.DEFAULT.dispatchStringMessage(message.getFormattedMessage(), level);
-        }
-        Throwable throwable = logEvent.getThrown();
-        if (throwable != null) {
-            //send log message
-            WLoggerClient.DEFAULT.dispatchThrowable(throwable, level);
+        try {
+            String level = logEvent.getLevel().name();
+            Message message = logEvent.getMessage();
+            if (message != null) {
+                //send log message
+                WLoggerClient.DEFAULT.dispatchStringMessage(message.getFormattedMessage(), level);
+            }
+            Throwable throwable = logEvent.getThrown();
+            if (throwable != null) {
+                //send log message
+                WLoggerClient.DEFAULT.dispatchThrowable(throwable, level);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 

@@ -29,6 +29,7 @@ public class WLoggerClient implements IWLoggerClient {
                                                                                    new ThreadPoolExecutor.DiscardOldestPolicy());
     public static final WLoggerClient DEFAULT = new WLoggerClient();
     private static ILoggerDataDealTools tools = new LoggerDataDealTools();
+    public static final String DEFAULT_NAMESPACE = "default";
 
     public WLoggerClient() {
 
@@ -51,11 +52,15 @@ public class WLoggerClient implements IWLoggerClient {
 
     @Override
     public void errorLog(Throwable throwable) {
+        EXECUTOR_SERVICE.execute(new WLoggerWorker(throwableToString(throwable), Level.ERROR));
+    }
+
+    private String throwableToString(Throwable throwable) {
         StringWriter errorsWriter = new StringWriter();
         throwable.printStackTrace(new PrintWriter(errorsWriter, true));
-        String log = errorsWriter.toString();
-        EXECUTOR_SERVICE.execute(new WLoggerWorker(log, Level.ERROR));
+        return errorsWriter.toString();
     }
+
 
     @Override
     public void errorLog(String log) {
@@ -102,7 +107,7 @@ public class WLoggerClient implements IWLoggerClient {
      * @param level   日志级别
      */
     @Override
-    public void dispatch(String message, String level) {
+    public void dispatchStringMessage(String message, String level) {
         if (Level.DEBUG.name().equals(level))
             this.debugLog(message);
         if (Level.INFO.name().equals(level))
@@ -113,6 +118,12 @@ public class WLoggerClient implements IWLoggerClient {
             this.errorLog(message);
         if (Level.FATAL.name().equals(level))
             this.fatalLog(message);
+    }
+
+
+    @Override
+    public void dispatchThrowable(Throwable throwable, String level) {
+        this.dispatchStringMessage(throwableToString(throwable), level);
     }
 
     public static class Env {

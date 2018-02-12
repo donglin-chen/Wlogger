@@ -13,7 +13,7 @@ public class LogUtils {
 
 
     public static void debug(){
-        LOGGER.debug("LogUtilsLogUtilsLogUtilsLogUtilsLogUtils");
+        LOGGER.debug("LogUtilsLogUtilsLogUtilsLogUtilsLogUtils",new RuntimeException("rtesrsrsrsrfs"));
     }
 
 }

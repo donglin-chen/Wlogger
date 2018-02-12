@@ -13,7 +13,7 @@ public class Log4j2Main {
 
     public static void main(String[] args) throws Exception {
         while (true) {
-            LOGGER.debug("tests",new NullPointerException("rer"));
+            LOGGER.debug("tests:{}",1,new RuntimeException("fsf"));
             Thread.sleep(1000);
         }
     }

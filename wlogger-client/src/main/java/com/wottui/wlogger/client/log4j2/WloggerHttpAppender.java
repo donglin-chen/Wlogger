@@ -10,8 +10,11 @@ import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
+import org.apache.logging.log4j.message.Message;
 
 import java.io.Serializable;
+
+import static com.wottui.wlogger.client.core.WLoggerClient.DEFAULT_NAMESPACE;
 
 /**
  * @Author: 1556964226@qq.com
@@ -28,8 +31,16 @@ public class WloggerHttpAppender extends AbstractAppender {
     @Override
     public void append(LogEvent logEvent) {
         String level = logEvent.getLevel().name();
-        String message = logEvent.getMessage().getFormattedMessage();
-        WLoggerClient.DEFAULT.dispatch(message, level);
+        Message message = logEvent.getMessage();
+        if (message != null) {
+            //send log message
+            WLoggerClient.DEFAULT.dispatchStringMessage(message.getFormattedMessage(), level);
+        }
+        Throwable throwable = logEvent.getThrown();
+        if (throwable != null) {
+            //send log message
+            WLoggerClient.DEFAULT.dispatchThrowable(throwable, level);
+        }
     }
 
     @PluginFactory
@@ -39,8 +50,11 @@ public class WloggerHttpAppender extends AbstractAppender {
                                                      @PluginAttribute("ignoreExceptions") boolean ignoreExceptions,
                                                      @PluginAttribute("appName") String appName,
                                                      @PluginAttribute("gateway") String gateway) {
+        if (gateway == null || gateway.length() == 0)
+            throw new RuntimeException("WloggerClient Gateway Value not null");
+        //init wlogger client environment
         WLoggerClient.Env.e.setUrl(gateway);
-        WLoggerClient.Env.e.setNamespace(name);
+        WLoggerClient.Env.e.setNamespace(appName == null ? DEFAULT_NAMESPACE : appName);
         return new WloggerHttpAppender(name, filter, layout);
     }
 

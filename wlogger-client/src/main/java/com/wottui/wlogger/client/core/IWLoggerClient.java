@@ -1,7 +1,5 @@
 package com.wottui.wlogger.client.core;
 
-import com.wottui.wlogger.core.Level;
-
 /**
  * @Author: 1556964226@qq.com
  * @Date: 2018/1/29
@@ -9,6 +7,9 @@ import com.wottui.wlogger.core.Level;
  */
 public interface IWLoggerClient {
 
+    /**
+     * @param log
+     */
     void infoLog(String log);
 
     void debugLog(String log);
@@ -21,5 +22,7 @@ public interface IWLoggerClient {
 
     void fatalLog(String message);
 
-    void dispatch(String message, String level);
+    void dispatchStringMessage(String message, String level);
+
+    void dispatchThrowable(Throwable throwable, String level);
 }

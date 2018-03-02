@@ -30,12 +30,30 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-        <!--mongo-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
             <version>1.4.7.RELEASE</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <version>1.0.4.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>elasticsearch</artifactId>
+                    <groupId>org.elasticsearch</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
         <dependency>
             <groupId>com.wottui</groupId>
             <artifactId>wlogger-core</artifactId>

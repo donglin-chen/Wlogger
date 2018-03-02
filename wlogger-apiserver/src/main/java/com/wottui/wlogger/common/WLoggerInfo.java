@@ -1,8 +1,5 @@
 package com.wottui.wlogger.common;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
@@ -11,18 +8,13 @@ import java.io.Serializable;
  * @Date: 2018/1/29
  * @Time: 20:32
  */
-@Document(collection = "tb_wlogger_info")
+
 public class WLoggerInfo implements Serializable {
-    @Id
     private String id;
-    @Indexed
     private String namespace;
-    @Indexed
     private String ip;
-    @Indexed
     private String level;
     private String content;
-    @Indexed
     private long timestamp;
 
     public String getId() {

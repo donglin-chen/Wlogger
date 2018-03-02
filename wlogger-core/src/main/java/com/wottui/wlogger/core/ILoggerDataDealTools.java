@@ -7,8 +7,19 @@ package com.wottui.wlogger.core;
  */
 public interface ILoggerDataDealTools {
 
-
+    /**
+     * 处理日志文件 先压缩在BASE64编码
+     *
+     * @param wLoggerData
+     * @return
+     */
     String deal(WLoggerData wLoggerData);
 
+    /**
+     * 将压缩在BASE64编码后的日志文件，转成WLoggerData对象
+     *
+     * @param data
+     * @return
+     */
     WLoggerData revert(String data);
 }

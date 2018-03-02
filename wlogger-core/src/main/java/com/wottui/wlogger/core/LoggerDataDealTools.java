@@ -28,7 +28,6 @@ public class LoggerDataDealTools implements ILoggerDataDealTools {
         try {
             gout = new GZIPOutputStream(bout);
             gout.write(jsonStr.getBytes());
-            gout.close();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

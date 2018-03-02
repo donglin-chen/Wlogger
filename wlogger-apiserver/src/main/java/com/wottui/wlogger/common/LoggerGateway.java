@@ -1,6 +1,6 @@
 package com.wottui.wlogger.common;
 
-import com.wottui.wlogger.ui.UI;
+import com.wottui.wlogger.ui.UIMongo;
 import com.wottui.wlogger.upload.LoggerUploadHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ public class LoggerGateway {
     @Resource
     private LoggerUploadHandler handler;
     @Resource
-    private UI ui;
+    private UIMongo ui;
 
     @RequestMapping("/gateway")
     @ResponseBody
@@ -38,7 +38,7 @@ public class LoggerGateway {
         if (LOG_UPLOAD.name().equals(type))
             handler.upload(text);
         if (DASHBOARD.name().equals(type)) {
-            ret.put("res", ui.dashboard(text));
+            ret.put("res", ui.logConsole(text));
         }
         ret.put("status", 200);
         ret.put("return_msg", "success");

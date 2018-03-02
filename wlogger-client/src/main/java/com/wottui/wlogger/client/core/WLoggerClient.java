@@ -23,17 +23,10 @@ import static com.wottui.wlogger.core.API.LOG_UPLOAD;
  * @Time: 16:38
  */
 public class WLoggerClient implements IWLoggerClient {
-    private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(2, 8, 0, TimeUnit.MILLISECONDS,
-                                                                                   new ArrayBlockingQueue<Runnable>(
-                                                                                           100),
-                                                                                   new ThreadPoolExecutor.DiscardOldestPolicy());
+    private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(2, 8, 0, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100), new ThreadPoolExecutor.DiscardOldestPolicy());
     public static final WLoggerClient DEFAULT = new WLoggerClient();
     private static ILoggerDataDealTools tools = new LoggerDataDealTools();
     public static final String DEFAULT_NAMESPACE = "default";
-
-    public WLoggerClient() {
-
-    }
 
     @Override
     public void infoLog(String log) {
@@ -60,7 +53,6 @@ public class WLoggerClient implements IWLoggerClient {
         throwable.printStackTrace(new PrintWriter(errorsWriter, true));
         return errorsWriter.toString();
     }
-
 
     @Override
     public void errorLog(String log) {

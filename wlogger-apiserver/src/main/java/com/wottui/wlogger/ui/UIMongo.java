@@ -1,16 +1,11 @@
 package com.wottui.wlogger.ui;
 
-import com.alibaba.fastjson.JSONObject;
 import com.wottui.wlogger.common.WLoggerInfo;
-import org.springframework.data.domain.Sort;
+import com.wottui.wlogger.vo.QueryVO;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,13 +14,13 @@ import java.util.List;
  * @Time: 10:32
  */
 @Component
-public class UI implements IUI {
+public class UIMongo implements IUI {
     @Resource
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<WLoggerInfo> dashboard(String text) {
-        if (StringUtils.isEmpty(text))
+    public List<WLoggerInfo> logConsole(QueryVO vo) {
+       /* if (StringUtils.isEmpty(text))
             return null;
         JSONObject jsonObject;
         try {
@@ -65,6 +60,7 @@ public class UI implements IUI {
         for (int i = tempList.size() - 1; i >= 0; i--) {
             retList.add(tempList.get(i));
         }
-        return retList;
+        return retList;*/
+        return null;
     }
 }

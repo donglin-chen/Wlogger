@@ -1,6 +1,7 @@
 package com.wottui.wlogger.ui;
 
 import com.wottui.wlogger.common.WLoggerInfo;
+import com.wottui.wlogger.vo.QueryVO;
 
 import java.util.List;
 
@@ -11,5 +12,10 @@ import java.util.List;
  */
 public interface IUI {
 
-    List<WLoggerInfo> dashboard(String text);
+    /**
+     * @param vo
+     * @return
+     */
+    List<WLoggerInfo> logConsole(QueryVO vo);
+
 }

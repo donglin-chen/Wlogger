@@ -96,6 +96,8 @@ public class LoggerDataHandler implements ILoggerDataHandler {
             transportClient.prepareIndex(indexName, indexName, "2").setSource(
                     jsonBuilder().startObject().field("namespace", data.getNamespace())
                                  .field("timestamp", data.getTimestamp())
+                                 .field("level", data.getLevel())
+                                 .field("ip", data.getIp())
                                  .field("content", data.getContent()).endObject())
                            .execute().actionGet();
         } catch (IOException e) {

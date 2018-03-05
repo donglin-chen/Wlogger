@@ -5,28 +5,18 @@ import com.wottui.wlogger.core.ILoggerDataDealTools;
 import com.wottui.wlogger.core.LoggerDataDealTools;
 import com.wottui.wlogger.core.WLoggerData;
 import com.wottui.wlogger.vo.QueryVO;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.client.Client;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
@@ -39,35 +29,33 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 public class LoggerDataHandler implements ILoggerDataHandler {
 
     private static ILoggerDataDealTools tools = new LoggerDataDealTools();
-    private static Logger logger = LoggerFactory.getLogger(LoggerDataHandler.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggerDataHandler.class);
     @Resource
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private TransportClient transportClient;
 
     @Override
     @Async
     public void upload(String text) {
-        logger.error("ressrsrer");
-        //WLoggerData data = tools.revert(text);
-        WLoggerData data = new WLoggerData();
+        WLoggerData data = tools.revert(text);
+        //WLoggerData data = new WLoggerData();
         data.setNamespace("default");
         String indexName = this.getIndexName(data.getNamespace());
-        //judge index("wlogger_info_index_"+namespace) exist
+        //judge index("wlogger_info_index_"+namespace) is exist, not so create it
         if (!this.isExistIndex(indexName)) {
             this.createIndex(indexName);
         }
         this.saveWLoggerInfo(data);
-        logger.debug("WLoggerInfo save success!!!");
+        LOGGER.debug("WLoggerInfo save success!!!");
     }
 
     @Override public List<WLoggerInfo> logConsole(QueryVO vo) {
         return null;
     }
 
-    @PostConstruct
+    /*@PostConstruct
     public void test() {
         upload("");
-    }
+    }*/
 
     /**
      * 判断是否存在索引
@@ -76,11 +64,9 @@ public class LoggerDataHandler implements ILoggerDataHandler {
      * @return
      */
     private boolean isExistIndex(String indexName) {
-       /* IndicesExistsResponse response = elasticsearchTemplate.getClient().admin().indices()
-                                                              .exists(new IndicesExistsRequest()
-                                                                      .indices(new String[]{indexName})).actionGet();
-        return response.isExists();*/
-        return true;
+        IndicesExistsResponse response = transportClient.admin().indices().exists(new IndicesExistsRequest()
+                .indices(indexName)).actionGet();
+        return response.isExists();
     }
 
     /**
@@ -94,10 +80,9 @@ public class LoggerDataHandler implements ILoggerDataHandler {
     }
 
     private boolean createIndex(String indexName) {
-       /* CreateIndexRequestBuilder builder = elasticsearchTemplate.getClient().admin().indices()
-                                                                 .prepareCreate(indexName);
-        return builder.execute().actionGet().isAcknowledged();*/
-        return true;
+        CreateIndexRequestBuilder builder = transportClient.admin().indices()
+                                                           .prepareCreate(indexName);
+        return builder.execute().actionGet().isAcknowledged();
     }
 
     /**
@@ -106,21 +91,19 @@ public class LoggerDataHandler implements ILoggerDataHandler {
      * @param data 日志数据体
      */
     private void saveWLoggerInfo(WLoggerData data) {
-        /*try {
+        try {
             String indexName = data.getNamespace();
-            elasticsearchTemplate.getClient().prepareIndex(indexName, indexName, "1").setSource(
-                    jsonBuilder().startObject().field("user", "kimchy")
-                                 .field("postDate", new Date())
-                                 .field("message", "trying out Elasticsearch").endObject())
-                                 .execute().actionGet();
+            transportClient.prepareIndex(indexName, indexName, "2").setSource(
+                    jsonBuilder().startObject().field("namespace", data.getNamespace())
+                                 .field("timestamp", data.getTimestamp())
+                                 .field("content", data.getContent()).endObject())
+                           .execute().actionGet();
         } catch (IOException e) {
-            logger.error("Save wlogger info failed", e);
-        }*/
+            LOGGER.error("Save wlogger info failed", e);
+        }
     }
 
-
-    public static void main(String[] args) {
-
+   /* public static void main(String[] args) {
         Client client = initElasticSearchClient();
         String esIndex = "graylog_0";
         SearchResponse searchResponse = client.prepareSearch(esIndex)
@@ -141,17 +124,16 @@ public class LoggerDataHandler implements ILoggerDataHandler {
             ++count;
         }
     }
-
     private static TransportClient initElasticSearchClient() {
         try {
-            Settings settings = new Settings.Builder().put("cluster.name", "mob71").build();
-            TransportClient transportClient = TransportClient.builder().settings(settings).build();
+            Settings settings = Settings.builder().put("cluster.name", "chendl_es_cluster").build();
+            TransportClient transportClient = new PreBuiltTransportClient(settings);
             return transportClient
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("10.18.97.71"), 9300));
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("10.18.97.148"), 19300));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             return null;
         }
-    }
 
+    }*/
 }

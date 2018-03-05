@@ -19,7 +19,7 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="Errout" fileName="${LOG_HOME}/error.log"
+        <RollingFile name="errorLogFileInfo" fileName="${LOG_HOME}/error.log"
                      filePattern="${LOG_HOME}/main-%d{yyyy-MM-dd}.log">
             <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
@@ -34,7 +34,8 @@
         <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileInfo"/>
-            <appender-ref ref="Errout"/>
+            <appender-ref ref="errorLogFileInfo"/>
         </root>
     </Loggers>
+
 </Configuration>

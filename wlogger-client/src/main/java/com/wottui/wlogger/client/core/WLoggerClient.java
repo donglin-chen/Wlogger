@@ -1,9 +1,6 @@
 package com.wottui.wlogger.client.core;
 
-import com.wottui.wlogger.core.ILoggerDataDealTools;
-import com.wottui.wlogger.core.Level;
-import com.wottui.wlogger.core.LoggerDataDealTools;
-import com.wottui.wlogger.core.WLoggerData;
+import com.wottui.wlogger.core.*;
 import com.wottui.wlogger.core.utils.JerseyClient;
 
 import java.io.PrintWriter;
@@ -74,13 +71,13 @@ public class WLoggerClient implements IWLoggerClient {
                 WLoggerData wLoggerData = new WLoggerData();
                 wLoggerData.setContent(log);
                 wLoggerData.setLevel(level.name());
-                wLoggerData.setNamespace(Env.e.getNamespace());
+                wLoggerData.setNamespace(WLoggerEnv.e.getNamespace());
                 wLoggerData.setTimestamp(System.currentTimeMillis());
                 String text = tools.deal(wLoggerData);
                 Map<String, String> params = new HashMap<>();
                 params.put("text", text);
                 params.put("apitype", LOG_UPLOAD.name());
-                JerseyClient.post(Env.e.getUrl(), params);
+                JerseyClient.post(WLoggerEnv.e.getUrl(), params);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -118,25 +115,4 @@ public class WLoggerClient implements IWLoggerClient {
         this.dispatchStringMessage(throwableToString(throwable), level);
     }
 
-    public static class Env {
-        public static final Env e = new Env();
-        private String namespace;
-        private String url;
-
-        String getNamespace() {
-            return namespace;
-        }
-
-        public void setNamespace(String namespace) {
-            this.namespace = namespace;
-        }
-
-        String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-    }
 }

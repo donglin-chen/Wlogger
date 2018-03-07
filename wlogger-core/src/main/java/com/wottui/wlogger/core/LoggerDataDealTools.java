@@ -17,14 +17,13 @@ import java.util.zip.GZIPOutputStream;
  * zip(Base64(WLoggerData))
  */
 public class LoggerDataDealTools implements ILoggerDataDealTools {
-    private static BASE64Encoder encoder = new BASE64Encoder();
-    private static BASE64Decoder decoder = new BASE64Decoder();
 
     @Override
     public String deal(WLoggerData wLoggerData) {
         String jsonStr = JSON.toJSONString(wLoggerData);
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         GZIPOutputStream gout = null;
+        BASE64Encoder encoder = new BASE64Encoder();
         try {
             gout = new GZIPOutputStream(bout);
             gout.write(jsonStr.getBytes());
@@ -46,6 +45,7 @@ public class LoggerDataDealTools implements ILoggerDataDealTools {
     public WLoggerData revert(String data) {
         if (data == null)
             return null;
+        BASE64Decoder decoder = new BASE64Decoder();
         ByteArrayOutputStream out = null;
         try {
             byte[] bytes = decoder.decodeBuffer(data);

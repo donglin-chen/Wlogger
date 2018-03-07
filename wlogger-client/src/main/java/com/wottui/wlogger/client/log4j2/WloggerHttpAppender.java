@@ -2,6 +2,7 @@ package com.wottui.wlogger.client.log4j2;
 
 
 import com.wottui.wlogger.client.core.WLoggerClient;
+import com.wottui.wlogger.core.WLoggerEnv;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
@@ -57,8 +58,8 @@ public class WloggerHttpAppender extends AbstractAppender {
         if (gateway == null || gateway.length() == 0)
             throw new RuntimeException("WloggerClient Gateway Value not null");
         //init wlogger client environment
-        WLoggerClient.Env.e.setUrl(gateway);
-        WLoggerClient.Env.e.setNamespace(appName == null ? DEFAULT_NAMESPACE : appName);
+        WLoggerEnv.e.setUrl(gateway);
+        WLoggerEnv.e.setNamespace(appName == null ? DEFAULT_NAMESPACE : appName);
         return new WloggerHttpAppender(name, filter, layout);
     }
 

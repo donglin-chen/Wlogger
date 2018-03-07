@@ -1,4 +1,4 @@
-package com.wottui.wlogger.upload;
+package com.wottui.wlogger.data;
 
 import com.wottui.wlogger.common.WLoggerInfo;
 import com.wottui.wlogger.vo.QueryVO;
@@ -19,7 +19,7 @@ public interface ILoggerDataHandler {
     void upload(String text);
 
     /**
-     * 日志控制台
+     * 日志控制台展示
      *
      * @param vo
      * @return

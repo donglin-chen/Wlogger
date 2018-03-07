@@ -1,7 +1,7 @@
 package com.wottui.wlogger.common;
 
 import com.alibaba.fastjson.JSON;
-import com.wottui.wlogger.upload.LoggerDataHandler;
+import com.wottui.wlogger.data.LoggerDataHandler;
 import com.wottui.wlogger.vo.QueryVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

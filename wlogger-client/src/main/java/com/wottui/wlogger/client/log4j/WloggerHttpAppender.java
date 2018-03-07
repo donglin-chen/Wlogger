@@ -1,6 +1,7 @@
 package com.wottui.wlogger.client.log4j;
 
 import com.wottui.wlogger.client.core.WLoggerClient;
+import com.wottui.wlogger.core.WLoggerEnv;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
@@ -52,7 +53,7 @@ public class WloggerHttpAppender extends AppenderSkeleton {
 
     public void setAppName(String appName) {
         this.appName = appName;
-        WLoggerClient.Env.e.setNamespace(appName == null ? DEFAULT_NAMESPACE : appName);
+        WLoggerEnv.e.setNamespace(appName == null ? DEFAULT_NAMESPACE : appName);
     }
 
     public String getGateway() {
@@ -63,6 +64,6 @@ public class WloggerHttpAppender extends AppenderSkeleton {
         this.gateway = gateway;
         if (gateway == null)
             throw new RuntimeException("WloggerClient Gateway Value not null");
-        WLoggerClient.Env.e.setUrl(gateway);
+        WLoggerEnv.e.setUrl(gateway);
     }
 }

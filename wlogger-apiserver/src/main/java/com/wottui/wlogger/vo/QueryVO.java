@@ -15,6 +15,15 @@ public class QueryVO implements Serializable {
     private Long endAt;
     private String like;
     private int limit;
+    private String ip;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
     public String getNamespace() {
         return namespace;

@@ -52,7 +52,7 @@ public class LoggerDataHandler implements ILoggerDataHandler {
     public void upload(String text) {
         WLoggerData data = tools.revert(text);
         //WLoggerData data = new WLoggerData();
-        data.setNamespace("default");
+        //data.setNamespace("default");
         String indexName = this.getIndexName(data.getNamespace());
         //judge index("wlogger_info_index_"+namespace) is exist, not so create it
         if (!this.isExistIndex(indexName)) {
@@ -77,15 +77,11 @@ public class LoggerDataHandler implements ILoggerDataHandler {
         if (limit == 0)
             limit = 100;
         BoolQueryBuilder qb = QueryBuilders.boolQuery();
-        if (!StringUtils.isEmpty(namespace)) {
-            qb.must(QueryBuilders
-                    .matchQuery(namespace, StringUtils.isEmpty(namespace) ? DEFAULT_NAMESPACE : namespace));
-        }
         if (!StringUtils.isEmpty(level)) {
-            qb.must(QueryBuilders.matchQuery(level, level));
+            qb.must(QueryBuilders.matchQuery("level", level));
         }
         if (!StringUtils.isEmpty(ip)) {
-            qb.must(QueryBuilders.matchPhraseQuery(ip, ip));
+            qb.must(QueryBuilders.matchQuery("ip", ip));
         }
         if (startAt != null && endAt != null && endAt >= startAt) {
             qb.must(QueryBuilders.rangeQuery("timestamp").lte(endAt).gte(startAt));
@@ -93,7 +89,7 @@ public class LoggerDataHandler implements ILoggerDataHandler {
         if (!StringUtils.isEmpty(like)) {
             qb.must(QueryBuilders.fuzzyQuery("content", like));
         }
-        SearchResponse response = transportClient.prepareSearch(indexName)/*.setQuery(qb)*/.setFrom(0).setSize(limit)
+        SearchResponse response = transportClient.prepareSearch(indexName).setQuery(qb).setFrom(0).setSize(limit)
                                                  .addSort("timestamp", SortOrder.DESC).get();
         List<WLoggerInfo> retList = new ArrayList<>();
         SearchHits searchHits = response.getHits();
@@ -103,7 +99,7 @@ public class LoggerDataHandler implements ILoggerDataHandler {
         if (sourceArr.length == 0)
             return null;
         int len = sourceArr.length;
-        for (int i = len-1; i >= 0; i--) {
+        for (int i = len - 1; i >= 0; i--) {
             String source = sourceArr[i].getSourceAsString();
             WLoggerInfo info = JSON.toJavaObject(JSON.parseObject(source), WLoggerInfo.class);
             retList.add(info);
@@ -131,7 +127,7 @@ public class LoggerDataHandler implements ILoggerDataHandler {
      * @return
      */
     private String getIndexName(String namespace) {
-        return "wlogger_info_" + namespace;
+        return ("wlogger_info_" + namespace).toLowerCase();
     }
 
     private boolean createIndex(String indexName) {
